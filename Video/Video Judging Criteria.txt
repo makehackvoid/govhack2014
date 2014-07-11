@@ -1,0 +1,10 @@
+http://www.govhack.org/competition-rules-code-of-conduct/
+
+Video: A three minute pre-recorded video embedded on their project page in which they present their project. This could include the team talking about their project, a screencast of the project, and anything else appropriate for video. Check out the developer kit for some assistance and instruction on how to make a compelling video.
+
+General: All GovHack entries will be judged by the GovHack Competition Judging Panel against the following criteria:
+- Originality
+- The relevance to the team nominated category definition
+- Consistency with contest purposes including social value
+- Quality and design (including standards compliance)
+- Usability (including documentation and ease of use)
