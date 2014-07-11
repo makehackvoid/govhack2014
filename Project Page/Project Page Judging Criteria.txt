@@ -1,6 +1,10 @@
 http://www.govhack.org/competition-rules-code-of-conduct/
 
-Project Page: A descriptive project page, listing their team members, details about their project, what data sets they used and what competition categories (local and national) that they are going for
+Project Page: A descriptive project page,
+- listing their team members,
+- details about their project,
+- what data sets they used, and
+- what competition categories (local and national) that they are going for
 
 General: All GovHack entries will be judged by the GovHack Competition Judging Panel against the following criteria:
 - Originality
