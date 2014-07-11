@@ -19,11 +19,11 @@ def after_request(response):
 
 import govhack2014.routes   # noqa
 
-from govhack2014.models import *
+from govhack2014.models import *  # noqa
 
-#database.connect()
-#if not Entity.table_exists():
-#    Entity.create_table()
-#if not Payment.table_exists():
-#   Payment.create_table()
-#database.close()
+# database.connect()
+# if not Entity.table_exists():
+#     Entity.create_table()
+# if not Payment.table_exists():
+#    Payment.create_table()
+# database.close()
