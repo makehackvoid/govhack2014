@@ -6,6 +6,17 @@ Please make your own fork the repository and use pull requests to submit changes
 
 So that other people know what you are working on, either assign an existing issue to yourself or create a new issue and then assign it. Ask if you don't have access or need help doing this. Reference the issue number #nn in the pull request when you have something ready to share (this lets Github link back to the issue automatically).
 
+## GitHub Flow
+
+We have chosen to use the Github Flow workflow as descibed here: (http://scottchacon.com/2011/08/31/github-flow.html).
+
+* Anything in the master branch is deployable
+* To work on something new, create a descriptively named branch off of master (ie: new-oauth2-scopes)
+* Commit to that branch locally and regularly push your work to the same named branch on the server
+* When you need feedback or help, or you think the branch is ready for merging, open a pull request
+* After someone else has reviewed and signed off on the feature, you can merge it into master
+* Once it is merged and pushed to ‘master’, you can and should deploy immediately
+
 ## Unit tests
 
 We are using [TravisCi](https://travis-ci.org/makehackvoid/govhack2014) to run tests whenever a pull request is submitted or a commit is made.
