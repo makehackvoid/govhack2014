@@ -31,7 +31,7 @@ We are using [TravisCi](https://travis-ci.org/makehackvoid/govhack2014) to run t
 
 ## Python virtual environment
 
-To get a python3 virtualenvwrapper project I installed python3 (and virtualenvwrapper), checked where it was using
+To get a python3 virtualenvwrapper project I installed python3 (minimum 3.3, 3.4 recommended) (and virtualenvwrapper), checked where it was using
 
 ```which python3```
 
