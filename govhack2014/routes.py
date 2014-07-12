@@ -14,3 +14,13 @@ def get_post_value(key):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/data/artsact.json')
+def artsact():
+    return render_template('placeholder.html')
+
+
+@app.route('/ambient')
+def ambient():
+    return render_template('placeholder.html')
