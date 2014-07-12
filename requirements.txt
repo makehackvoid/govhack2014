@@ -4,3 +4,7 @@ MarkupSafe==0.18
 Werkzeug==0.9.4
 itsdangerous==0.23
 peewee==2.2.1
+argparse==1.2.1
+oauthlib==0.6.3
+requests==2.3.0
+requests-oauthlib==0.4.1
