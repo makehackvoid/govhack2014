@@ -4,33 +4,6 @@
     <meta charset="utf-8">
     <script src="//code.jquery.com/jquery-2.0.0.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Raleway|Lato:300,400,700,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
-    <style>
-
-    * {
-      margin: 0;
-      padding: 0;
-    }
-    #map {
-      background-color: #fff;
-      width: 100%;
-      height: 100%;
-      position: absolute;
-    }
-    .background {
-      fill: none;
-      pointer-events: all;
-    }
-    #suburbs {
-      fill: #4ECDC4;
-      stroke: #fff;
-      stroke-linejoin: round;
-      stroke-linecap: round;
-    }
-    circle {
-      fill: #d52;
-      stroke: #fff;
-    }
-    </style>
     <link type="text/css" rel="stylesheet" href="/static/ambient.css"/>
   </head>
   <body>
@@ -42,12 +15,6 @@
       <p style="display:none;">The ACT Government is providing our community with exciting art in public places in more accessible ways.</p>
       <p class="shorturl">artACT.com</p>
     </div>
-    <div class="sidebar right" style="display:none;">
-      <div id="twitter">
-      </div>
-      <h3 style="display:none;">Upcoming Events!!</h3>
-      <p class="shorturl">makehackvoid.com</p>
-    </div>
     <div id="map"></div>
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="//d3js.org/topojson.v1.min.js"></script>
@@ -58,8 +25,8 @@
         suburb;
 
     var projection = d3.geo.mercator()
-        .center([149.1244, -35.3075])
-        .scale(80000)
+        .center([149.1244, -35.3175])
+        .scale(100000)
         .translate([width / 2, height / 2, 1]);
 
     var path = d3.geo.path()
