@@ -10,8 +10,12 @@ import urllib2
 
 # CONFIG
 targeturl = 'http://www.data.act.gov.au/resource/j746-krni.json'
-connection_string = 'dbname=abs_sa1 user=postgres'
+tablename = 'act_divi_wgs84'
+database = 'act_shape'
+connection_string = 'dbname='+database+' user=postgres'
 outputfile = 'output.json'
+suburbNameColIndex = 3
+
 
 print('Retrieving JSON')
 opener = urllib2.build_opener()
@@ -31,7 +35,7 @@ for item in jres:
     if blank is False:
         print('Searching database for ', coord)
         # coord = '149.234167 -35.353333'
-        sql = ("SELECT * FROM sa1_2011_aust " +
+        sql = ("SELECT * FROM "+tablename+" " +
                " WHERE ST_Intersects(ST_GeomFromText('POINT("+coord+")'),the_geom) LIMIT 10;")
         # ^---- We have to concat here because if we pass it via parameters it
         # will automatically enclose in single quotes
@@ -44,7 +48,7 @@ for item in jres:
         item['local_region'] = item['suburb']
 
         if len(rows) == 1:
-            item['suburb'] = rows[0][5]
+            item['suburb'] = rows[0][suburbNameColIndex]
         else:
             item['suburb'] = ''
 
