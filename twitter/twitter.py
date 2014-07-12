@@ -4,7 +4,7 @@ import settings
 
 
 class Twitter(object):
-#Reads the Twitter
+    # Reads the Twitter
     list_of_burbs = ['Belconnen', 'Civic', 'Gungahlin',
                      'North Canberra', 'Parliamentary Triangle',
                      'South Canberra', 'Tuggeranong', 'Woden']
