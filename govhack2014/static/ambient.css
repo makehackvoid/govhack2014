@@ -1,0 +1,84 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	font-family: "Lato", sans-serif;
+	color: rgba(255,255,255,0.87);
+	background-color: #FFF;
+}
+h1, h2, h3 {
+	font-family: 'Raleway', sans-serif;
+	font-weight: normal;
+}
+
+#heading {
+	background-color: #C7F464;
+	color: rgba(0,0,0,0.54);
+	top: 0;
+	left: 0;
+	position: relative;
+	padding: 30px 20px;
+	margin: 0 -20px;
+	margin-bottom: 20px;
+	border-bottom: #555 40px solid;
+}
+#twitter {
+	margin: 0 -20px;
+	background-color: #55ACEE;
+	top: 0;
+	left: 0;
+	position: relative;
+	padding: 30px 20px;
+	margin-bottom: 20px;
+	border-bottom: #555 40px solid;
+}
+
+h1 {
+	font-size: 4em;
+	text-align: right;
+}
+h2 {
+	font-size: 2.5em;
+	margin-top: 2em;
+}
+h3 {
+	font-size: 2em;
+	text-align: center;
+}
+p {
+	font-size: 1.5em;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 2em;
+}
+
+.sidebar {
+	position: absolute;
+	top: 0;
+ 	width: 20%;
+ 	overflow: auto;
+ 	height: 100%;
+ 	background-color: #556270;
+ 	box-shadow: 0px 0px 20px #aaa;
+ 	padding: 0 20px;
+ 	z-index: 1;
+}
+.left {
+	left: 0;
+}
+.right {
+	right: 0;
+}
+
+p.shorturl {
+	font-size: 2em;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+p.shorturl.mhv {
+	right: 0;
+	text-align: right;
+}

@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <script src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Raleway|Lato:300,400,700,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
     <style>
 
     * {
@@ -20,29 +21,33 @@
       pointer-events: all;
     }
     #suburbs {
-      fill: #cde;
+      fill: #4ECDC4;
       stroke: #fff;
       stroke-linejoin: round;
       stroke-linecap: round;
     }
-    #suburbs .active {
-      fill: #89a;
-
-    }
-
     circle {
       fill: #d52;
       stroke: #fff;
     }
-
-    pre.prettyprint {
-      border: 1px solid #ccc;
-      margin-bottom: 0;
-      padding: 9.5px;
-    }
     </style>
+    <link type="text/css" rel="stylesheet" href="/static/ambient.css"/>
   </head>
   <body>
+    <div class="sidebar left">
+      <div id="heading">
+        <h1>ACT Public Art</h1>
+      </div>
+      <h2>Tweet a suburb to @openart</h2>
+      <p style="display:none;">The ACT Government is providing our community with exciting art in public places in more accessible ways.</p>
+      <p class="shorturl">artACT.com</p>
+    </div>
+    <div class="sidebar right" style="display:none;">
+      <div id="twitter">
+      </div>
+      <h3 style="display:none;">Upcoming Events!!</h3>
+      <p class="shorturl">makehackvoid.com</p>
+    </div>
     <div id="map"></div>
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="//d3js.org/topojson.v1.min.js"></script>
