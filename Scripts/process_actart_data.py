@@ -13,7 +13,7 @@ targeturl = 'http://www.data.act.gov.au/resource/j746-krni.json'
 connection_string = 'dbname=abs_sa1 user=postgres'
 outputfile = 'output.json'
 
-print 'Retrieving JSON'
+print('Retrieving JSON')
 opener = urllib2.build_opener()
 f = opener.open(targeturl)
 jres = json.load(f)
