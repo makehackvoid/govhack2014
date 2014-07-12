@@ -29,7 +29,7 @@ for item in jres:
     blank = False
 
     if blank is False:
-        print 'Searching database for ', coord
+        print('Searching database for ', coord)
         # coord = '149.234167 -35.353333'
         sql = "SELECT * FROM sa1_2011_aust WHERE ST_Intersects(ST_GeomFromText('POINT("+coord+")'),the_geom) LIMIT 10;"
         # ^---- We have to concat here because if we pass it via parameters it will automatically enclose in single quotes
