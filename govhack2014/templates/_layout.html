@@ -1,7 +1,6 @@
 {% set navigation_bar = [
     ('/', 'index', 'Home', 'home'),
-    ('/signup/', 'signup', 'Sign Up', 'user'),
-    ('/payments/', 'payments', 'Payments', 'money')
+    ('/ambient', 'ambient', 'Ambient', 'ambient')
 ] -%}
 
 {% set active_page = active_page|default('index') -%}
@@ -42,6 +41,13 @@
                         <a class="navbar-brand" href="/">GovHack2014</a>
                     </div>
                     <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            {% for href, id, caption, icon in navigation_bar %}
+                                <li{% if id == active_page %} class="active"{% endif %}>
+                                    <a href="{{ href|e }}"><i class="fa fa-fw fa-{{ icon|e }}"></i> {{ caption|e }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->
             </div>
