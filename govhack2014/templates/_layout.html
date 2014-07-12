@@ -1,7 +1,6 @@
 {% set navigation_bar = [
     ('/', 'index', 'Home', 'home'),
-    ('/signup/', 'signup', 'Sign Up', 'user'),
-    ('/payments/', 'payments', 'Payments', 'money')
+    ('/ambient', 'ambient', 'Ambient', 'ambient')
 ] -%}
 
 {% set active_page = active_page|default('index') -%}
@@ -31,21 +30,15 @@
         {% block head %}{% endblock %}
     </head>
     <body>
-        <div class="container">
-            <div class="navbar navbar-default" role="navigation">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <i class="fa fa-bars fa-lg"></i>
-                        </button>
-                        <a class="navbar-brand" href="/">GovHack2014</a>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                    </div><!--/.nav-collapse -->
-                </div><!--/.container-fluid -->
-            </div>
-
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+        {% for href, id, caption, icon in navigation_bar %}
+        <li{% if id == active_page %} class="active"{% endif %}>
+          <a href="{{ href|e }}"><i class="fa fa-fw fa-{{ icon|e }}"></i> {{ caption|e }}</a>
+        </li>
+        {% endfor %}
+        </ul>
             <section id="content">
                 {{ render_messages("success") }}
                 {{ render_messages("info") }}
@@ -54,7 +47,10 @@
                 {% block content %}
                 {% endblock %}
             </section>
-        </div>
+      <div class="footer">
+        <p>Release under <a href="https://raw.githubusercontent.com/makehackvoid/govhack2014/master/LICENSE">MIT License</a>. Source code on <a href="https://github.com/makehackvoid/govhack2014"><i class="fa fa-fw fa-github"></i> GitHub</a></p>
+      </div>
+    </div> <!-- /container -->
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
