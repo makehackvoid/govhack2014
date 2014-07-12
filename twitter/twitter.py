@@ -27,8 +27,7 @@ class Twitter(object):
                                             client_secret=settings.TWITTER_CLIENT_SECRET,
                                             resource_owner_key=settings.TWITTER_RESOURCE_KEY,
                                             resource_owner_secret=settings.TWITTER_RESOURCE_SECRET)
-            r = twitter_session.get(url=
-                                    "https://api.twitter.com/1.1/statuses/mentions_timeline.json")
+            r = twitter_session.get(url=self.url)
             if r.ok:
                 return self.parse_tweets(r.json())
 
