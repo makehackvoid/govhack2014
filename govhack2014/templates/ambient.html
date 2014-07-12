@@ -19,6 +19,9 @@
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="//d3js.org/topojson.v1.min.js"></script>
     <script>
+    var ART_TIME = 5;
+    var MAP_TIME = 5;
+
     var m_width = $("#map").width(),
         width = $("#map").width(),
         height = $("#map").height(),
@@ -46,11 +49,14 @@
 
     var g = svg.append("g");
     var g2 = g.append("g");
+    var suburbs;
+    var arts;
 
     d3.json("/static/suburbs.topo.json", function(error, us) {
+      suburbs = topojson.feature(us, us.objects.suburbs).features;
       g2.attr("id", "suburbs")
         .selectAll("path")
-        .data(topojson.feature(us, us.objects.suburbs).features)
+        .data(suburbs)
         .enter()
         .append("path")
         .attr("id", function(d) { return "suburb" + d.id; })
@@ -60,8 +66,9 @@
     });
 
     d3.json("/static/artsact.json", function(error, us) {
+      arts = us;
       g2.selectAll(".pin")
-        .data(us)
+        .data(arts)
         .enter().append("circle", ".pin")
         .attr("r", 5)
         .attr("transform", function(d) {
@@ -69,6 +76,7 @@
             d.location.longitude,
             d.location.latitude
           ]) + ")"});
+      setup_timers();
     });
 
     function zoom(xyz) {
@@ -94,6 +102,12 @@
       return [x, y, z];
     }
 
+    function get_art_xyz(d) {
+      var xy = projection([d.location.longitude, d.location.latitude]);
+      var z = 7.5;
+      return [xy[0], xy[1], z];
+    }
+
     function suburb_clicked(d) {
       if (suburb) {
         g.selectAll("#suburb" + suburb.id).style('display', null);
@@ -104,10 +118,36 @@
         suburb = d;
         zoom(xyz);
       } else { // same suburb or
-        var xyz = [width / 2, height / 2, 1];
         suburb = null;
-        zoom(xyz);
+        show_map();
       }
+    }
+
+    function show_map() {
+      var xyz = [width / 2, height / 2, 1];
+      zoom(xyz);
+    }
+
+    function show_art(art) {
+      var xyz = get_art_xyz(art);
+      zoom(xyz);
+    }
+
+    function show_random_art() {
+      var art = arts[Math.floor((Math.random() * arts.length))];
+      show_art(art);
+    }
+
+    function setup_timers() {
+      setInterval(function() {
+        show_random_art();
+        console.log("art!");
+        var mapInterval = setInterval(function() {
+          clearInterval(mapInterval);
+          console.log("map!");
+          show_map();
+        }, ART_TIME * 1000);
+      }, (ART_TIME+MAP_TIME) * 1000);
     }
     </script>
   </body>
