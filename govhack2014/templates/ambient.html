@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <style>
+    #map {
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+    .background {
+      fill: none;
+      pointer-events: all;
+    }
+    #suburbs {
+      fill: #cde;
+      stroke: #fff;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    #suburbs .active {
+      fill: #89a;
+    }
+    pre.prettyprint {
+      border: 1px solid #ccc;
+      margin-bottom: 0;
+      padding: 9.5px;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>
+    <script>
+    var m_width = $("#map").width(),
+        width = 938,
+        height = 500,
+        suburb;
+
+    var projection = d3.geo.mercator()
+        .center([149.1244, -35.3075])
+        .scale(50000)
+        .translate([width / 2, height / 2]);
+
+    var path = d3.geo.path()
+        .projection(projection);
+
+    var svg = d3.select("#map").append("svg")
+        .attr("preserveAspectRatio", "xMidYMid")
+        .attr("viewBox", "0 0 " + width + " " + height)
+        .attr("width", m_width)
+        .attr("height", m_width * height / width);
+
+    svg.append("rect")
+        .attr("class", "background")
+        .attr("width", width)
+        .attr("height", height)
+        .on("click", suburb_clicked);
+
+    var g = svg.append("g");
+
+    d3.json("/static/suburbs.topo.json", function(error, us) {
+      g.append("g")
+        .attr("id", "suburbs")
+        .selectAll("path")
+        .data(topojson.feature(us, us.objects.suburbs).features)
+        .enter()
+        .append("path")
+        .attr("id", function(d) { return "suburb" + d.id; })
+        .attr("d", path)
+        .on("click", suburb_clicked);
+
+    });
+
+    function zoom(xyz) {
+      g.transition()
+        .duration(750)
+        .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")")
+        .selectAll(["#suburbs"])
+        .style("stroke-width", 1.0 / xyz[2] + "px");
+    }
+
+    function get_xyz(d) {
+      var bounds = path.bounds(d);
+      var w_scale = (bounds[1][0] - bounds[0][0]) / width;
+      var h_scale = (bounds[1][1] - bounds[0][1]) / height;
+      var z = .96 / Math.max(w_scale, h_scale);
+      var x = (bounds[1][0] + bounds[0][0]) / 2;
+      var y = (bounds[1][1] + bounds[0][1]) / 2 + (height / z / 6);
+      return [x, y, z];
+    }
+
+    function suburb_clicked(d) {
+      if (suburb) {
+        g.selectAll("#suburb" + suburb.id).style('display', null);
+      }
+
+      if (d && suburb !== d) { // new suburb clicked
+        var xyz = get_xyz(d);
+        suburb = d;
+        zoom(xyz);
+      } else { // same suburb or
+        var xyz = [width / 2, height / 1.5, 1];
+        suburb = null;
+        zoom(xyz);
+      }
+    }
+
+    $(window).resize(function() {
+      var w = $("#map").width();
+      svg.attr("width", w);
+      svg.attr("height", w * height / width);
+    });
+    </script>
+  </body>
+</html>
