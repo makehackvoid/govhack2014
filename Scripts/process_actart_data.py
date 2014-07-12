@@ -1,26 +1,41 @@
 #!/usr/bin/python
 
+# ################################
 # DEPENDANCIES
+# python ver: 3.4
 # pip: psycopg2,urllib2,json
 # apt: postgresql-server-dev-9.1
+# ################################
 
 import psycopg2
 import json
-import urllib2
+import urllib.request as ur_req
 
+# ##########################
 # CONFIG
+# ##########################
 targeturl = 'http://www.data.act.gov.au/resource/j746-krni.json'
 tablename = 'act_divi_wgs84'
 database = 'act_shape'
 connection_string = 'dbname='+database+' user=postgres'
 outputfile = 'output.json'
-suburbNameColIndex = 3
 
+# CONFIG - Column Index Definitions
+suburbNameColIndex = 3  # Required
+divCodeColIndex = 2  # Optional - set to None to disable
+diviColIndex = 4  # Optional - set to None to disable
+
+# ###########################################
+# NO USER SERVICABLE PARTS BEYOND THIS POINT
+# ###########################################
 
 print('Retrieving JSON')
-opener = urllib2.build_opener()
-f = opener.open(targeturl)
-jres = json.load(f)
+# opener = urllib.build_opener()
+# f = opener.open(targeturl)
+# jres = json.load(f)
+
+resp = ur_req.urlopen(targeturl)
+jres = json.loads(resp.readall().decode('utf-8'))
 
 newdict = []
 
@@ -49,6 +64,10 @@ for item in jres:
 
         if len(rows) == 1:
             item['suburb'] = rows[0][suburbNameColIndex]
+            if divCodeColIndex is not None:
+                item['div_code'] = rows[0][divCodeColIndex]
+            if diviColIndex is not None:
+                item['divi'] = rows[0][diviColIndex]
         else:
             item['suburb'] = ''
 
