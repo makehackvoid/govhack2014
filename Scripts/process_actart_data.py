@@ -30,9 +30,6 @@ diviColIndex = 4  # Optional - set to None to disable
 # ###########################################
 
 print('Retrieving JSON')
-# opener = urllib.build_opener()
-# f = opener.open(targeturl)
-# jres = json.load(f)
 
 resp = ur_req.urlopen(targeturl)
 jres = json.loads(resp.readall().decode('utf-8'))
@@ -40,38 +37,38 @@ jres = json.loads(resp.readall().decode('utf-8'))
 newdict = []
 
 for item in jres:
-    # THIS CODE HERE ACTUALLY IS TO BE IN A LOOP!
     lat = item['location']['latitude']
     lon = item['location']['longitude']
     coord = lon + ' ' + lat
 
-    blank = False
+    print('Searching database for ', coord)
 
-    if blank is False:
-        print('Searching database for ', coord)
-        # coord = '149.234167 -35.353333'
-        sql = ("SELECT * FROM "+tablename+" " +
-               " WHERE ST_Intersects(ST_GeomFromText('POINT("+coord+")'),the_geom) LIMIT 10;")
-        # ^---- We have to concat here because if we pass it via parameters it
-        # will automatically enclose in single quotes
-        conn = psycopg2.connect(connection_string)
-        cur = conn.cursor()
-        res = cur.execute(sql)
-        rows = cur.fetchall()
-        conn.close()
+    sql = ("SELECT * FROM "+tablename+" " +
+           " WHERE ST_Intersects(ST_GeomFromText('POINT("+coord+")'),the_geom) LIMIT 10;")
+    # ^---- We have to concat here because if we pass it via parameters it
+    # will automatically enclose in single quotes
+    conn = psycopg2.connect(connection_string)
+    cur = conn.cursor()
+    res = cur.execute(sql)
+    rows = cur.fetchall()
+    conn.close()
 
-        item['local_region'] = item['suburb']
+    item['local_region'] = item['suburb']
 
-        if len(rows) == 1:
-            item['suburb'] = rows[0][suburbNameColIndex]
-            if divCodeColIndex is not None:
-                item['div_code'] = rows[0][divCodeColIndex]
-            if diviColIndex is not None:
-                item['divi'] = rows[0][diviColIndex]
-        else:
-            item['suburb'] = ''
+    if len(rows) == 1:
+        item['suburb'] = rows[0][suburbNameColIndex]
+        if divCodeColIndex is not None:
+            item['div_code'] = rows[0][divCodeColIndex]
+        if diviColIndex is not None:
+            item['divi'] = rows[0][diviColIndex]
+    else:
+        item['suburb'] = ''
+        if divCodeColIndex is not None:
+            item['div_code'] = ''
+        if diviColIndex is not None:
+            item['divi'] = ''
 
-        newdict.append(item)
+    newdict.append(item)
 
 f = open(outputfile, 'w')
 f.write(json.dumps(newdict))
