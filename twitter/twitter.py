@@ -4,6 +4,21 @@ import settings
 
 
 class Twitter(object):
+    """
+    Get latest tweet containing a suburb from the twitter account
+    defined in settings.py
+
+    ...
+
+    Methods
+    -------
+    get_suburb
+        return the most recent suburb in tweets or None if no
+        suburbs or same tweet is still most recent.
+    parse_tweets
+        parsing code to look for suburb in mentions_timeline json
+
+    """
 
     def __init__(self):
         self.suburbs = ['Belconnen', 'Civic', 'Gungahlin', 'Charnwood',
@@ -11,17 +26,17 @@ class Twitter(object):
                         'South Canberra', 'Tuggeranong', 'Woden']
 
         self.url = 'https://api.twitter.com/1.1/statuses/mentions_timeline.json'
-
-    def get_latest_suburb(self):
-        return "Charnwood"  # todo, make this work
+        self.last_tweet_id = 0
 
     def parse_tweets(self, response):
         for item in response:
             for word in re.findall(r"[\w']+", item['text']):
                 if word in self.suburbs:
-                    return word
+                    if item['id'] != self.last_tweet_id:
+                        self.last_tweet_id = item['id']
+                        return word
 
-    def get_tweet(self):
+    def get_suburb(self):
         try:
             twitter_session = OAuth1Session(settings.TWITTER_CLIENT_KEY,
                                             client_secret=settings.TWITTER_CLIENT_SECRET,
