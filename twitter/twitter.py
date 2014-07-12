@@ -22,10 +22,15 @@ class Twitter(object):
                     return word
 
     def get_tweet(self):
-        twitter_session = OAuth1Session(settings.TWITTER_CLIENT_KEY,
-                                        client_secret=settings.TWITTER_CLIENT_SECRET,
-                                        resource_owner_key=settings.TWITTER_RESOURCE_KEY,
-                                        resource_owner_secret=settings.TWITTER_RESOURCE_SECRET)
-        r = twitter_session.get(url="https://api.twitter.com/1.1/statuses/mentions_timeline.json")
-        if r.ok:
-            return self.parse_tweets(r.json())
+        try:
+            twitter_session = OAuth1Session(settings.TWITTER_CLIENT_KEY,
+                                            client_secret=settings.TWITTER_CLIENT_SECRET,
+                                            resource_owner_key=settings.TWITTER_RESOURCE_KEY,
+                                            resource_owner_secret=settings.TWITTER_RESOURCE_SECRET)
+            r = twitter_session.get(url=
+                                    "https://api.twitter.com/1.1/statuses/mentions_timeline.json")
+            if r.ok:
+                return self.parse_tweets(r.json())
+
+        except:
+                None
