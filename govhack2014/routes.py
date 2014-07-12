@@ -18,7 +18,7 @@ def index():
 
 @app.route('/data/artsact.json')
 def artsact():
-    return render_template('placeholder.html')
+    return app.send_static_file('artsact.json')
 
 
 @app.route('/ambient')

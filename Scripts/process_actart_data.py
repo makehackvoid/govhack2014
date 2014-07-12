@@ -31,8 +31,10 @@ for item in jres:
     if blank is False:
         print('Searching database for ', coord)
         # coord = '149.234167 -35.353333'
-        sql = "SELECT * FROM sa1_2011_aust WHERE ST_Intersects(ST_GeomFromText('POINT("+coord+")'),the_geom) LIMIT 10;"
-        # ^---- We have to concat here because if we pass it via parameters it will automatically enclose in single quotes
+        sql = ("SELECT * FROM sa1_2011_aust " +
+               " WHERE ST_Intersects(ST_GeomFromText('POINT("+coord+")'),the_geom) LIMIT 10;")
+        # ^---- We have to concat here because if we pass it via parameters it
+        # will automatically enclose in single quotes
         conn = psycopg2.connect(connection_string)
         cur = conn.cursor()
         res = cur.execute(sql)
