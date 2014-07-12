@@ -23,4 +23,4 @@ def artsact():
 
 @app.route('/ambient')
 def ambient():
-    return render_template('placeholder.html')
+    return render_template('ambient.html')
