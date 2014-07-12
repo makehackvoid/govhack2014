@@ -8,7 +8,7 @@ install:
   - pip install flake8 --download-cache $HOME/.pip-cache
   - pip install -r requirements.txt --use-mirrors --download-cache $HOME/.pip-cache
 before_script:
-  - cp "setting-example.py" settings.py
+  - cp "settings-example.py" settings.py
   - flake8 .
 script:
   - python runtests.py
