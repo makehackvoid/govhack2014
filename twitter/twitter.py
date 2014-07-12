@@ -1,4 +1,6 @@
 import re
+import json
+import os
 from requests_oauthlib import OAuth1Session
 import settings
 
@@ -21,9 +23,20 @@ class Twitter(object):
     """
 
     def __init__(self):
-        self.suburbs = ['Belconnen', 'Civic', 'Gungahlin', 'Charnwood',
-                        'North Canberra', 'Parliamentary Triangle',
-                        'South Canberra', 'Tuggeranong', 'Woden']
+        # self.suburbs = ['Belconnen', 'Civic', 'Gungahlin', 'Charnwood',
+        #                'North Canberra', 'Parliamentary Triangle',
+        #                'South Canberra', 'Tuggeranong', 'Woden']
+        cwd = os.path.dirname(__file__)
+        json_data = open(cwd + '/../govhack2014/static/artsact.json')
+        data = json.load(json_data)
+        suburbs = []
+        for item in data:
+            suburbs.append(item['suburb'])
+
+        suburbs = set(suburbs)
+        suburbs.remove('')
+        suburbs.add('CIVIC')
+        self.suburbs = suburbs
 
         self.url = 'https://api.twitter.com/1.1/statuses/mentions_timeline.json'
         self.last_tweet_id = 0
@@ -31,9 +44,12 @@ class Twitter(object):
     def parse_tweets(self, response):
         for item in response:
             for word in re.findall(r"[\w']+", item['text']):
+                word = word.upper()
                 if word in self.suburbs:
                     if item['id'] != self.last_tweet_id:
                         self.last_tweet_id = item['id']
+                        if word == 'CIVIC':
+                            word = 'CITY'
                         return word
 
     def get_suburb(self):
