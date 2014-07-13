@@ -3,17 +3,33 @@
   <head>
     <meta charset="utf-8">
     <script src="//code.jquery.com/jquery-2.0.0.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Raleway|Lato:300,400,700,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,700' rel='stylesheet' type='text/css'>
     <link type="text/css" rel="stylesheet" href="/static/ambient.css"/>
   </head>
   <body>
     <div class="sidebar left">
       <div id="heading">
-        <h1>ACT Public Art</h1>
+        <h1>ARTifacts</h1>
+        <h2>ACT Public Art</h2>
       </div>
-      <h2>Tweet a suburb to @openart</h2>
+      <p class="instructions">Tweet a suburb to @openart</p>
       <p style="display:none;">The ACT Government is providing our community with exciting art in public places in more accessible ways.</p>
       <p class="shorturl">artACT.com</p>
+    </div>
+    <div id="artpanel">
+      <div id="artphoto">
+        <img id="artimg" src="http://www.arts.act.gov.au/__data/assets/image/0007/390562/Toku_large.jpg">
+      </div>
+      <div id="plaque">
+        <h3><span id="title">Alfred Deakin, A Life in Three Phases</span></h3>
+        <h3><span id="artist">Phil Nizette and Jennifer Jones silly name</span></h3>
+        <h3><span id="location">North Canberra</span></h3>
+        <h3>Commissioned in <span id="commissionDate">2009</span> by <span id="commissioner">artsACT</span>
+        </h3>
+        <div id="down">
+          <h3>Requested by <span id="tweeter">@maybe</span>
+        </div>
+      </div>
     </div>
     <div id="map"></div>
     <script src="//d3js.org/d3.v3.min.js"></script>
@@ -28,7 +44,7 @@
         suburb;
 
     var projection = d3.geo.mercator()
-        .center([149.1244, -35.3175])
+        .center([149.0844, -35.3175])
         .scale(100000)
         .translate([width / 2, height / 2, 1]);
 
