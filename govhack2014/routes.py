@@ -1,7 +1,8 @@
 from govhack2014 import app
 from govhack2014.models import *  # noqa
-from flask import render_template, request, flash, redirect, url_for  # noqa
+from flask import render_template, request, flash, redirect, url_for, jsonify  # noqa
 from govhack2014.resources import *  # noqa
+from twitter import Twitter
 
 
 def get_post_value(key):
@@ -24,3 +25,11 @@ def artsact():
 @app.route('/ambient')
 def ambient():
     return render_template('ambient.html')
+
+
+@app.route('/twitter/latest_request')
+def twitter_latest_request():
+    t = Twitter()
+    last_tweet = t.get_suburb()
+    print('\n\nlast tweet:', last_tweet, '\n\n')
+    return jsonify(**last_tweet)
