@@ -10,12 +10,13 @@
   </head>
   <body>
     <div class="sidebar left shadow">
-      <div id="heading">
-        <a href="/"><h1>ARTifacts</h1></a>
+      <a class="back-link" href="/"><div id="heading">
+        <h1>ARTifacts</h1>
         <h2>ACT Public Art</h2>
-      </div>
+        <p class="back"><i class="fa fa-lg fa-angle-left"></i> back</p>
+      </div></a>
       <div class="instructions">
-        <h2><i class="fa fa-twitter fa-lg"></i> Twitter</h2>
+        <h3><i class="fa fa-twitter fa-lg"></i> Twitter</h3>
         <p>Request art from a suburb! Tweet a suburb name to <span id="twitteraccount">@artifactsACT</span></p>
       </div>
       <p class="shorturl">data from arts.act.gov.au</p>
@@ -25,13 +26,13 @@
         <img id="artimg" src="">
       </div>
       <div id="plaque" class="shadow" style="right: 30%;">
-        <h3><span id="title"></span></h3>
-        <h3><span id="artist"></span></h3>
-        <h3><span id="location"></span></h3>
-        <h3>Commissioned in <span id="commissionDate"></span> by <span id="commissioner"></span>
-        </h3>
+        <h4><span id="title"></span></h4>
+        <p><span id="artist"></span></p>
+        <p><span id="location"></span></p>
+        <p>Commissioned in <span id="commissionDate"></span> by <span id="commissioner"></span>
+        </p>
         <div id="down">
-          <h3>Requested by @<span id="tweeter"></span>
+          <p>Requested by @<span id="tweeter"></span></p>
         </div>
       </div>
     </div>
@@ -60,8 +61,6 @@
 
       var imgH = img[0].naturalHeight;
       var imgW = img[0].naturalWidth;
-      console.log(imgW);
-      console.log(imgH);
 
       if ( imgW < imgH ) { 
           $(img).removeClass("landscape");
@@ -71,7 +70,6 @@
           $(img).addClass("landscape");
       }
     }
-
 
     var ART_TIME = 20;
     var MAP_TIME = 5;
@@ -197,7 +195,8 @@
     function show_panel() {
       var i = setInterval(function() {
         clearInterval(i);
-        $("#artpanel").animate({left: '22%'}, 750, 'swing', function() {
+        var leftOffset = ($(".sidebar").width() + 40) + "px";
+        $("#artpanel").animate({left: leftOffset}, 750, 'swing', function() {
           $("#plaque").animate({right: '0%'}, 250);
         });
       }, BEAT_TIME*1000);
@@ -280,6 +279,29 @@
         }, ART_TIME * 1000);
       }, (ART_TIME+MAP_TIME) * 1000);
     }
+
+    var sw = $( ".sidebar" ).width();
+    $(".sidebar").css("font-size", sw/(27/1.5) + "px");
+    var pw = $( "#plaque" ).width();
+    $("#plaque").css("font-size", pw/(25/1.5) + "px");
+
+
+    var never_do_again = false;
+    $(window).bind('resize', function(e)
+    {
+        window.resizeEvt;
+        $(window).resize(function()
+        {
+            clearTimeout(window.resizeEvt);
+            window.resizeEvt = setTimeout(function()
+            {
+              if(!never_do_again) {
+                alert("Please refresh the page after resizing the window");
+                never_do_again = true;
+              }
+            }, 250);
+        });
+    });
     </script>
   </body>
 </html>
