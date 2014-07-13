@@ -1,0 +1,84 @@
+body {
+    background-color: #FFF;
+    color: rgba(0,0,0,0.87);
+    text-align: right;
+    font-family: Lato, sans-serif;
+}
+
+section#content {
+    padding-top: 30px;
+}
+
+.jumbotron {
+    text-align: center;
+    color: rgba(0,0,0,0.54);
+    /*background-color: #4ECDC4;*/
+    background-color: #C7F464
+}
+
+/*.jumbotron p a {
+    color: #FF6B6B;
+}*/
+
+.jumbotron .btn-lg {
+    margin-top: 20px;
+    font-size: 30px;
+}
+
+.jumbotron p {
+    width: 80%;
+    margin: auto;
+}
+
+h1, h2, h3 {
+    font-family: Raleway, sans-serif;
+    font-weight: normal;
+}
+
+
+/* BUTTON */
+.btn-mainsite { 
+  color: #FFFFFF; 
+  background-color: #C44D58; 
+  border-color: #FFFFFF; 
+} 
+ 
+.btn-mainsite:hover, 
+.btn-mainsite:focus, 
+.btn-mainsite:active, 
+.btn-mainsite.active, 
+.open .dropdown-toggle.btn-mainsite { 
+  color: #FFFFFF; 
+  background-color: #c44d58; 
+  border-color: #FFFFFF; 
+} 
+ 
+.btn-mainsite:active, 
+.btn-mainsite.active, 
+.open .dropdown-toggle.btn-mainsite { 
+  background-image: none; 
+} 
+ 
+.btn-mainsite.disabled, 
+.btn-mainsite[disabled], 
+fieldset[disabled] .btn-mainsite, 
+.btn-mainsite.disabled:hover, 
+.btn-mainsite[disabled]:hover, 
+fieldset[disabled] .btn-mainsite:hover, 
+.btn-mainsite.disabled:focus, 
+.btn-mainsite[disabled]:focus, 
+fieldset[disabled] .btn-mainsite:focus, 
+.btn-mainsite.disabled:active, 
+.btn-mainsite[disabled]:active, 
+fieldset[disabled] .btn-mainsite:active, 
+.btn-mainsite.disabled.active, 
+.btn-mainsite[disabled].active, 
+fieldset[disabled] .btn-mainsite.active { 
+  background-color: #C44D58; 
+  border-color: #FFFFFF; 
+} 
+ 
+.btn-mainsite .badge { 
+  color: #C44D58; 
+  background-color: #FFFFFF; 
+}

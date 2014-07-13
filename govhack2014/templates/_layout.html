@@ -1,23 +1,4 @@
-{% set navigation_bar = [
-    ('/', 'index', 'Home', 'home'),
-    ('/ambient', 'ambient', 'Ambient', 'ambient')
-] -%}
-
 {% set active_page = active_page|default('index') -%}
-
-{% macro render_messages(category) %}
-    {% with messages = get_flashed_messages(category_filter=[category]) %}
-        {% if messages %}
-            <div class="alert alert-{{category}} alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-lg fa-close"></i></button>
-
-                {% for message in messages %}
-                    <p>{{ message|safe }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-{% endmacro %}
 
 <!doctype html>
 <html>
@@ -26,31 +7,20 @@
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css">
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link href='http://fonts.googleapis.com/css?family=Raleway|Lato:400,700,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
         {% block template_head %}{% endblock %}
         {% block head %}{% endblock %}
     </head>
     <body>
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-        {% for href, id, caption, icon in navigation_bar %}
-        <li{% if id == active_page %} class="active"{% endif %}>
-          <a href="{{ href|e }}"><i class="fa fa-fw fa-{{ icon|e }}"></i> {{ caption|e }}</a>
-        </li>
-        {% endfor %}
-        </ul>
+        <div class="container">
             <section id="content">
-                {{ render_messages("success") }}
-                {{ render_messages("info") }}
-                {{ render_messages("warning") }}
-                {{ render_messages("danger") }}
                 {% block content %}
                 {% endblock %}
             </section>
-      <div class="footer">
-        <p>Release under <a href="https://raw.githubusercontent.com/makehackvoid/govhack2014/master/LICENSE">MIT License</a>. Source code on <a href="https://github.com/makehackvoid/govhack2014"><i class="fa fa-fw fa-github"></i> GitHub</a></p>
-      </div>
-    </div> <!-- /container -->
+            <div class="footer">
+                <p>Released under the <a href="https://raw.githubusercontent.com/makehackvoid/govhack2014/master/LICENSE">MIT License</a>. Source code on <a href="https://github.com/makehackvoid/govhack2014"><i class="fa fa-fw fa-github"></i> GitHub</a></p>
+            </div>
+        </div> <!-- /container -->
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
