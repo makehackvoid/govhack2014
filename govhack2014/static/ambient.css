@@ -18,7 +18,8 @@ h1, h2, h3 {
 }
 
 h1 {
-    font-size: 4em;
+    font-size: 50px;
+    font-weight: 500;
 }
 h2 {
     font-size: 2.5em;
@@ -32,16 +33,15 @@ h3 {
 }
 p {
     font-size: 1.5em;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 2em;
+    margin-top: 20px;
 }
 
 p.shorturl {
-    font-size: 2em;
+    font-size: 1.25em;
+    color: rgba(255,255,255,0.54);
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: 20px;
+    right: 20px;
 }
 .sidebar {
     position: absolute;
@@ -81,7 +81,6 @@ p.shorturl {
     padding: 30px 20px;
     margin: 0 -20px;
     margin-bottom: 20px;
-    border-bottom: #555 40px solid;
 }
 
 #artpanel {
@@ -98,11 +97,11 @@ p.shorturl {
     width: 30%;
     background-color: #556270;
     top: 0;
-    border: #555 4px solid;
     padding: 10px;
     overflow: visible;
     max-height: 100%;
     z-index: 4;
+    font-size: 1.25em;
 }
 
 #plaque h3 {
@@ -148,7 +147,24 @@ img.landscape {
 }
 
 .instructions {
-    font-size: 1.5em;
+    padding: 0 20px;
+    margin: 0 -20px;
+}
+
+.instructions h2 {
+    padding: 20px;
+    margin: 0 -20px;
+    background-color: #55acee;
+    font-size: 30px;
+}
+
+.instructions p {
+    font-size: 22px;
+}
+
+#twitteraccount {
+    font-size: 30px;
+    font-weight: 500;
 }
 
 .shadow {
