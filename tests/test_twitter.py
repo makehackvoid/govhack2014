@@ -22,7 +22,7 @@ class test_twitter(unittest.TestCase):
         # parse tweets returns  dict {'timestamp', 'suburb', 'screen_name'}
         test = '[{"created_at":"Sat Jul 12 01:22:32 +0000 2014",'
         test = test + '"id":487768939548536840,"id_str":"487768939548536840",'
-        test = test + '"text":"@mhvgovhacktest Show me a Parkes sculpture",'
+        test = test + '"text":"@artifactsact Show me a Parkes sculpture",'
         test = test + '"user":{"screen_name":"cmrn"}}]'
         jsontest = json.loads(test)
         suburb = self.t.parse_tweets(jsontest)
@@ -34,7 +34,7 @@ class test_twitter(unittest.TestCase):
         self.assertEqual(suburb['timestamp'], tse, "timestamp")
         test = '[{"created_at":"Sat Jul 12 01:22:32 +0000 2014",'
         test = test + '"id":487768939548536840,"id_str":"487768939548536840",'
-        test = test + '"text":"@mhvgovhacktest Show me a Parkes sculpture",'
+        test = test + '"text":"@artifactsact Show me a Parkes sculpture",'
         test = test + '"user":{"screen_name":"cmrn"}}]'
         jsontest = json.loads(test)
         suburb = self.t.parse_tweets(jsontest)
