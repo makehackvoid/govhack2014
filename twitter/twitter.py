@@ -77,5 +77,10 @@ class Twitter(object):
             r = twitter_session.get(url=self.url)
             if r.ok:
                 return self.parse_tweets(r.json())
+            else:
+                last_tweet = {'timestamp': self.last_tweet_time,
+                              'suburb': self.last_suburb,
+                              'screen_name': self.last_from_user}
+                return last_tweet
         except:
                 None
