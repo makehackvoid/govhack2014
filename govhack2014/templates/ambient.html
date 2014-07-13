@@ -14,13 +14,13 @@
       </div>
       <p class="instructions">Tweet a suburb to @openart</p>
       <p style="display:none;">The ACT Government is providing our community with exciting art in public places in more accessible ways.</p>
-      <p class="shorturl">artACT.com</p>
+      <p class="shorturl">arts.act.gov.au</p>
     </div>
     <div id="artpanel" style="left: -65%;">
       <div id="artphoto" class="shadow">
         <img id="artimg" src="">
       </div>
-      <div id="plaque" class="shadow">
+      <div id="plaque" class="shadow" style="right: 30%;">
         <h3><span id="title"></span></h3>
         <h3><span id="artist"></span></h3>
         <h3><span id="location"></span></h3>
@@ -50,14 +50,14 @@
       return "/static/art_images/" + filename;
     }
 
-    function set_art_image(url) {
+    function size_art_image() {
       var img = $("#artimg");
       var container = $("#artphoto");
 
-      $(img).attr("src", url);
-
-      var imgH = $(img).height();
-      var imgW = $(img).width();
+      var imgH = img[0].naturalHeight;
+      var imgW = img[0].naturalWidth;
+      console.log(imgW);
+      console.log(imgH);
 
       if ( imgW < imgH ) { 
           $(img).removeClass("landscape");
@@ -102,6 +102,7 @@
     var arts;
     var selected;
     var lastest_request = { timestamp: 0 };
+    var artID;
 
     d3.json("/static/suburbs.topo.json", function(error, us) {
       suburbs = topojson.feature(us, us.objects.suburbs).features;
@@ -189,11 +190,15 @@
     }
 
     function show_panel() {
-      $("#artpanel").animate({left: '22%'}, BEAT_TIME*1000);
+      $("#artpanel").animate({left: '22%'}, BEAT_TIME*750, 'swing', function() {
+        $("#plaque").animate({right: '0%'}, BEAT_TIME*250);
+      });
     }
 
     function hide_panel(end) {
-      $("#artpanel").animate({left: '-70%'}, BEAT_TIME*1000, 'swing', end);
+      $("#plaque").animate({right: '30%'}, BEAT_TIME*250, 'swing', function() {
+        $("#artpanel").animate({left: '-70%'}, BEAT_TIME*750, 'swing', end);
+      });
     }
 
     function show_map() {
@@ -201,30 +206,26 @@
         var xyz = [width / 2, height / 2, 1];
         var t = g.transition().duration(BEAT_TIME * 1000);
         deselect_point(t);
-        zoom(t, xyz);
+        var t2 = zoom(t, xyz);
+        t2.each("end", function() {
+          load_next_art();
+        })
       });
     }
 
-    function show_art(id) {
-      var art = arts[id];
-      console.log(art);
+    function show_art() {
+      var art = arts[artID];
       var xyz = get_art_xyz(art);
       var t = g.transition().duration(BEAT_TIME * 1000);
-      select_point(t, id);
+      select_point(t, artID);
       var t2 = zoom(t, xyz);
       t2.each("end", show_panel);
-
-      $("#title").text(art.title);
-      $("#artist").text(art.artist);
-      $("#location").text(toTitleCase(art.suburb));
-      $("#commissioner").text(art.commissioned_details);
-      $("#commissionDate").text(art.date);
-      set_art_image(get_local_image_url(art.url_2.url));
+      size_art_image();
     }
 
-    function show_random_art() {
+    function load_next_art() {
       d3.json("/twitter/latest_request", function(error, result) {
-        var artID;
+        var thisArtID;
         try {
           if(result.timestamp > lastest_request.timestamp) {
             lastest_request = result;
@@ -232,26 +233,34 @@
               return element.suburb.indexOf(result.suburb.toUpperCase().substr(0, 4)) > -1;
             });
             var art = possible_arts[Math.floor((Math.random() * possible_arts.length))];
-            artID = arts.indexOf(art);
+            thisArtID = arts.indexOf(art);
             $("#down").show();
             $("#tweeter").text(result.screen_name);
           }
         } catch(e) { }
         
         // No request or error, so show a random art
-        if(artID == null) {
-          artID = Math.floor((Math.random() * arts.length));
+        if(thisArtID == null) {
+          thisArtID = Math.floor((Math.random() * arts.length));
           $("#down").hide();
         }
 
-        show_art(artID);
-      });
+        artID = thisArtID;
 
+        var art = arts[artID];
+        $("#title").text(art.title);
+        $("#artist").text(art.artist);
+        $("#location").text(toTitleCase(art.suburb));
+        $("#commissioner").text(art.commissioned_details);
+        $("#commissionDate").text(art.date);
+        $("#artimg").attr("src", get_local_image_url(art.url_2.url));
+      });
     }
 
     function setup_timers() {
+      load_next_art();
       setInterval(function() {
-        show_random_art();
+        show_art();
         var mapInterval = setInterval(function() {
           clearInterval(mapInterval);
           show_map();

@@ -19,11 +19,10 @@ h1, h2, h3 {
 
 h1 {
     font-size: 4em;
-    text-align: right;
 }
 h2 {
     font-size: 2.5em;
-    margin-top: 1em;
+    margin-top: 0.5em;
 }
 h3 {
     font-size: 1em;
@@ -94,7 +93,8 @@ p.shorturl {
     width: 65%;
 }
 #plaque {
-    float: left;
+    position: absolute;
+    right: 0;
     width: 30%;
     background-color: #556270;
     top: 0;
@@ -110,10 +110,10 @@ p.shorturl {
 }
 
 #artphoto {
+    position: absolute;;
     height: 100%;
     background: #000;
     width: 70%;
-    float: left;
     z-index: 5;
 }
 #artimg {
