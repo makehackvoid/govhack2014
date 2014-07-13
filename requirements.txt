@@ -6,7 +6,6 @@ argparse==1.2.1
 beautifulsoup4==4.3.2
 flake8==2.2.2
 itsdangerous==0.23
-lxml==3.3.5
 mccabe==0.2.1
 oauthlib==0.6.3
 peewee==2.2.1
