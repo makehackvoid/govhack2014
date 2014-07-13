@@ -35,13 +35,20 @@
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="//d3js.org/topojson.v1.min.js"></script>
     <script>
+    d3.selection.prototype.moveToFront = function() {
+      return this.each(function(){
+        this.parentNode.appendChild(this);
+      });
+    };
+
+
     var ART_TIME = 5;
     var MAP_TIME = 5;
+    var BEAT_TIME = 1;
 
     var m_width = $("#map").width(),
         width = $("#map").width(),
-        height = $("#map").height(),
-        suburb;
+        height = $("#map").height();
 
     var projection = d3.geo.mercator()
         .center([149.0844, -35.3175])
@@ -60,13 +67,14 @@
     svg.append("rect")
         .attr("class", "background")
         .attr("width", width)
-        .attr("height", height)
-        .on("click", suburb_clicked);
+        .attr("height", height);
 
     var g = svg.append("g");
     var g2 = g.append("g");
     var suburbs;
     var arts;
+    var selected;
+    var lastest_request = { timestamp: 0 };
 
     d3.json("/static/suburbs.topo.json", function(error, us) {
       suburbs = topojson.feature(us, us.objects.suburbs).features;
@@ -76,8 +84,7 @@
         .enter()
         .append("path")
         .attr("id", function(d) { return "suburb" + d.id; })
-        .attr("d", path)
-        .on("click", suburb_clicked);
+        .attr("d", path);
 
     });
 
@@ -87,6 +94,7 @@
         .data(arts)
         .enter().append("circle", ".pin")
         .attr("r", 5)
+        .attr("id", function(d,i) { return "art" + i; })
         .attr("transform", function(d) {
           return "translate(" + projection([
             d.location.longitude,
@@ -95,17 +103,44 @@
       setup_timers();
     });
 
-    function zoom(xyz) {
+    function zoom(t, xyz) {
       var visual_z = xyz[2]/2;
       if(xyz[2] == 1) visual_z = 1;
 
-      g.transition()
-        .duration(750)
-        .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")")
+      var t1 = t.transition()
+        .delay(BEAT_TIME * 1000)
+        .duration(BEAT_TIME * 1000);
+
+        t1
+        .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")");
+        t1
         .selectAll(["#suburbs"])
-        .style("stroke-width", 1.0 / visual_z + "px")
+        .style("stroke-width", 1.0 / visual_z + "px");
+        t1
         .selectAll("circle")
         .attr("r", 5.0/visual_z);
+        t1
+        .select("#art"+selected)
+        .attr("r", 10.0/visual_z);
+    }
+
+    function select_point(t, id) {
+      selected = id;
+      g.select("#art" + selected).moveToFront();
+      t
+      .select("#art" + selected)
+      .style("fill", "#c44d58")
+      .attr("r", "10")
+      .style("z-index", "100");
+    }
+
+    function deselect_point(t) {
+      t
+      .select("#art" + selected)
+      .style("fill", "")
+      .attr("r", "1.33333")
+      .style("z-index", "");
+      selected = null;
     }
 
     function get_xyz(d) {
@@ -124,43 +159,50 @@
       return [xy[0], xy[1], z];
     }
 
-    function suburb_clicked(d) {
-      if (suburb) {
-        g.selectAll("#suburb" + suburb.id).style('display', null);
-      }
-
-      if (d && suburb !== d) { // new suburb clicked
-        var xyz = get_xyz(d);
-        suburb = d;
-        zoom(xyz);
-      } else { // same suburb or
-        suburb = null;
-        show_map();
-      }
-    }
-
     function show_map() {
+      var t = g.transition().duration(BEAT_TIME * 1000);
       var xyz = [width / 2, height / 2, 1];
-      zoom(xyz);
+      deselect_point(t);
+      zoom(t, xyz);
     }
 
-    function show_art(art) {
+    function show_art(id) {
+      var art = arts[id];
+      console.log(art);
       var xyz = get_art_xyz(art);
-      zoom(xyz);
+      var t = g.transition().duration(BEAT_TIME * 1000);
+      select_point(t, id);
+      zoom(t, xyz);
     }
 
     function show_random_art() {
-      var art = arts[Math.floor((Math.random() * arts.length))];
-      show_art(art);
+      d3.json("/twitter/latest_request", function(error, result) {
+        var artID;
+        try {
+          if(result.timestamp > lastest_request.timestamp) {
+            lastest_request = result;
+            var possible_arts = arts.filter(function(element) {
+              return element.suburb.indexOf(result.suburb.toUpperCase().substr(0, 4)) > -1;
+            });
+            var art = possible_arts[Math.floor((Math.random() * possible_arts.length))];
+            artID = arts.indexOf(art);
+          }
+        } catch(e) { }
+        
+        // No request or error, so show a random art
+        if(artID == null)
+          artID = Math.floor((Math.random() * arts.length));
+
+        show_art(artID);
+      });
+
     }
 
     function setup_timers() {
       setInterval(function() {
         show_random_art();
-        console.log("art!");
         var mapInterval = setInterval(function() {
           clearInterval(mapInterval);
-          console.log("map!");
           show_map();
         }, ART_TIME * 1000);
       }, (ART_TIME+MAP_TIME) * 1000);
