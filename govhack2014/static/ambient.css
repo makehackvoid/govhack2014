@@ -18,21 +18,20 @@ h1, h2, h3 {
 }
 
 h1 {
-    font-size: 50px;
+    font-size: 40px;
     font-weight: 600;
 }
 h2 {
-    font-size: 2.5em;
-    margin-top: 0.5em;
+    font-size: 30px;
+    margin-top: 10px;
 }
 h3 {
-    font-size: 1em;
+    font-size: 25px;
     text-align: left;
     display: inline-block;
-    margin-bottom: 0.5em;
 }
 p {
-    font-size: 1.5em;
+    font-size: 15px;
     margin-top: 20px;
 }
 
@@ -41,7 +40,6 @@ p {
 }
 
 p.shorturl {
-    font-size: 1.25em;
     color: rgba(255,255,255,0.54);
     position: absolute;
     bottom: 20px;
@@ -51,13 +49,48 @@ p.shorturl {
     position: absolute;
     top: 0;
     width: 22%;
+    min-width: 250px;
     overflow: auto;
     height: 100%;
     background-color: #556270;
     padding: 0 20px;
     z-index: 100;
     left: 0;
+    font-size: 1rem;
 }
+
+.sidebar h1 {
+    font-size: 3em;
+}
+
+.sidebar h2 {
+    font-size: 2em;
+}
+
+.sidebar .instructions h3 {
+    font-size: 1.5em;
+}
+
+.sidebar .instructions p {
+    font-size: 1.25em;
+}
+.sidebar .instructions  #twitteraccount {
+    font-size: 1.5em;
+    font-weight: 500;
+}
+
+.sidebar .shorturl {
+    font-size: 1em;
+}
+
+#plaque p {
+    font-size: 1em;
+}
+
+#plaque h4 {
+    font-size: 1.5em;
+}
+
 .background {
     fill: none;
     pointer-events: all;
@@ -87,9 +120,15 @@ p.shorturl {
     margin-bottom: 20px;
 }
 
-#heading a {
-    color: rgba(0,0,0,0.54);
+a.back-link {
     text-decoration: none;
+}
+
+.back {
+    color: rgba(0,0,0,0.32);
+    font-size: 1.25em;
+    margin-top: 10px;
+    margin-bottom: -20px;
 }
 
 #artpanel {
@@ -110,11 +149,11 @@ p.shorturl {
     overflow: visible;
     max-height: 100%;
     z-index: 4;
-    font-size: 1.25em;
 }
 
-#plaque h3 {
+#plaque p {
     display: block;
+    margin-top: 10px;
 }
 
 #artphoto {
@@ -141,18 +180,13 @@ img.portrait {
 img.landscape {
     width: 100%;
 }
-
-#title {
-    font-size: 1.5em;
-}
 #artist {
     font-weight: bold;
 }
 #down {
-    margin-top: 20px;
-    font-size: 0.75em;
+    margin-top: 10px;
+    font-size: 0.9em;
     text-align: right;
-    margin-bottom: -10px;
 }
 
 .instructions {
@@ -160,20 +194,11 @@ img.landscape {
     margin: 0 -20px;
 }
 
-.instructions h2 {
+.instructions h3 {
     padding: 20px;
     margin: 0 -20px;
     background-color: #55acee;
-    font-size: 30px;
-}
-
-.instructions p {
-    font-size: 22px;
-}
-
-#twitteraccount {
-    font-size: 30px;
-    font-weight: 500;
+    display: block;
 }
 
 .shadow {
