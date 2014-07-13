@@ -3,32 +3,82 @@
   <head>
     <meta charset="utf-8">
     <script src="//code.jquery.com/jquery-2.0.0.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Raleway|Lato:300,400,700,300italic,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,700' rel='stylesheet' type='text/css'>
     <link type="text/css" rel="stylesheet" href="/static/ambient.css"/>
   </head>
   <body>
-    <div class="sidebar left">
+    <div class="sidebar left shadow">
       <div id="heading">
-        <h1>ACT Public Art</h1>
+        <h1>ARTifacts</h1>
+        <h2>ACT Public Art</h2>
       </div>
-      <h2>Tweet a suburb to @openart</h2>
+      <p class="instructions">Tweet a suburb to @openart</p>
       <p style="display:none;">The ACT Government is providing our community with exciting art in public places in more accessible ways.</p>
       <p class="shorturl">artACT.com</p>
+    </div>
+    <div id="artpanel" style="left: -65%;">
+      <div id="artphoto" class="shadow">
+        <img id="artimg" src="">
+      </div>
+      <div id="plaque" class="shadow">
+        <h3><span id="title"></span></h3>
+        <h3><span id="artist"></span></h3>
+        <h3><span id="location"></span></h3>
+        <h3>Commissioned in <span id="commissionDate"></span> by <span id="commissioner"></span>
+        </h3>
+        <div id="down">
+          <h3>Requested by @<span id="tweeter"></span>
+        </div>
+      </div>
     </div>
     <div id="map"></div>
     <script src="//d3js.org/d3.v3.min.js"></script>
     <script src="//d3js.org/topojson.v1.min.js"></script>
     <script>
-    var ART_TIME = 5;
+    d3.selection.prototype.moveToFront = function() {
+      return this.each(function(){
+        this.parentNode.appendChild(this);
+      });
+    };
+    function toTitleCase(str)
+    {
+      return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+
+    function get_local_image_url(remote_url) {
+      var filename = remote_url.split("/").slice(-1)[0];
+      return "/static/art_images/" + filename;
+    }
+
+    function set_art_image(url) {
+      var img = $("#artimg");
+      var container = $("#artphoto");
+
+      $(img).attr("src", url);
+
+      var imgH = $(img).height();
+      var imgW = $(img).width();
+
+      if ( imgW < imgH ) { 
+          $(img).removeClass("landscape");
+          $(img).addClass("portrait");
+      } else {
+          $(img).removeClass("portrait");
+          $(img).addClass("landscape");
+      }
+    }
+
+
+    var ART_TIME = 20;
     var MAP_TIME = 5;
+    var BEAT_TIME = 1;
 
     var m_width = $("#map").width(),
         width = $("#map").width(),
-        height = $("#map").height(),
-        suburb;
+        height = $("#map").height();
 
     var projection = d3.geo.mercator()
-        .center([149.1244, -35.3175])
+        .center([149.0844, -35.3175])
         .scale(100000)
         .translate([width / 2, height / 2, 1]);
 
@@ -44,13 +94,14 @@
     svg.append("rect")
         .attr("class", "background")
         .attr("width", width)
-        .attr("height", height)
-        .on("click", suburb_clicked);
+        .attr("height", height);
 
     var g = svg.append("g");
     var g2 = g.append("g");
     var suburbs;
     var arts;
+    var selected;
+    var lastest_request = { timestamp: 0 };
 
     d3.json("/static/suburbs.topo.json", function(error, us) {
       suburbs = topojson.feature(us, us.objects.suburbs).features;
@@ -60,8 +111,7 @@
         .enter()
         .append("path")
         .attr("id", function(d) { return "suburb" + d.id; })
-        .attr("d", path)
-        .on("click", suburb_clicked);
+        .attr("d", path);
 
     });
 
@@ -71,6 +121,7 @@
         .data(arts)
         .enter().append("circle", ".pin")
         .attr("r", 5)
+        .attr("id", function(d,i) { return "art" + i; })
         .attr("transform", function(d) {
           return "translate(" + projection([
             d.location.longitude,
@@ -79,17 +130,46 @@
       setup_timers();
     });
 
-    function zoom(xyz) {
+    function zoom(t, xyz) {
       var visual_z = xyz[2]/2;
       if(xyz[2] == 1) visual_z = 1;
 
-      g.transition()
-        .duration(750)
-        .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")")
+      var t1 = t.transition()
+        .delay(BEAT_TIME * 1000)
+        .duration(BEAT_TIME * 1000);
+
+        t1
+        .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")");
+        t1
         .selectAll(["#suburbs"])
-        .style("stroke-width", 1.0 / visual_z + "px")
+        .style("stroke-width", 1.0 / visual_z + "px");
+        t1
         .selectAll("circle")
         .attr("r", 5.0/visual_z);
+        t1
+        .select("#art"+selected)
+        .attr("r", 10.0/visual_z);
+
+        return t1;
+    }
+
+    function select_point(t, id) {
+      selected = id;
+      g.select("#art" + selected).moveToFront();
+      t
+      .select("#art" + selected)
+      .style("fill", "#c44d58")
+      .attr("r", "10")
+      .style("z-index", "100");
+    }
+
+    function deselect_point(t) {
+      t
+      .select("#art" + selected)
+      .style("fill", "")
+      .attr("r", "1.33333")
+      .style("z-index", "");
+      selected = null;
     }
 
     function get_xyz(d) {
@@ -108,43 +188,72 @@
       return [xy[0], xy[1], z];
     }
 
-    function suburb_clicked(d) {
-      if (suburb) {
-        g.selectAll("#suburb" + suburb.id).style('display', null);
-      }
+    function show_panel() {
+      $("#artpanel").animate({left: '22%'}, BEAT_TIME*1000);
+    }
 
-      if (d && suburb !== d) { // new suburb clicked
-        var xyz = get_xyz(d);
-        suburb = d;
-        zoom(xyz);
-      } else { // same suburb or
-        suburb = null;
-        show_map();
-      }
+    function hide_panel(end) {
+      $("#artpanel").animate({left: '-70%'}, BEAT_TIME*1000, 'swing', end);
     }
 
     function show_map() {
-      var xyz = [width / 2, height / 2, 1];
-      zoom(xyz);
+      hide_panel(function() {
+        var xyz = [width / 2, height / 2, 1];
+        var t = g.transition().duration(BEAT_TIME * 1000);
+        deselect_point(t);
+        zoom(t, xyz);
+      });
     }
 
-    function show_art(art) {
+    function show_art(id) {
+      var art = arts[id];
+      console.log(art);
       var xyz = get_art_xyz(art);
-      zoom(xyz);
+      var t = g.transition().duration(BEAT_TIME * 1000);
+      select_point(t, id);
+      var t2 = zoom(t, xyz);
+      t2.each("end", show_panel);
+
+      $("#title").text(art.title);
+      $("#artist").text(art.artist);
+      $("#location").text(toTitleCase(art.suburb));
+      $("#commissioner").text(art.commissioned_details);
+      $("#commissionDate").text(art.date);
+      set_art_image(get_local_image_url(art.url_2.url));
     }
 
     function show_random_art() {
-      var art = arts[Math.floor((Math.random() * arts.length))];
-      show_art(art);
+      d3.json("/twitter/latest_request", function(error, result) {
+        var artID;
+        try {
+          if(result.timestamp > lastest_request.timestamp) {
+            lastest_request = result;
+            var possible_arts = arts.filter(function(element) {
+              return element.suburb.indexOf(result.suburb.toUpperCase().substr(0, 4)) > -1;
+            });
+            var art = possible_arts[Math.floor((Math.random() * possible_arts.length))];
+            artID = arts.indexOf(art);
+            $("#down").show();
+            $("#tweeter").text(result.screen_name);
+          }
+        } catch(e) { }
+        
+        // No request or error, so show a random art
+        if(artID == null) {
+          artID = Math.floor((Math.random() * arts.length));
+          $("#down").hide();
+        }
+
+        show_art(artID);
+      });
+
     }
 
     function setup_timers() {
       setInterval(function() {
         show_random_art();
-        console.log("art!");
         var mapInterval = setInterval(function() {
           clearInterval(mapInterval);
-          console.log("map!");
           show_map();
         }, ART_TIME * 1000);
       }, (ART_TIME+MAP_TIME) * 1000);
