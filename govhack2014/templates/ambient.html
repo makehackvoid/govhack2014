@@ -5,6 +5,7 @@
     <script src="//code.jquery.com/jquery-2.0.0.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,700' rel='stylesheet' type='text/css'>
     <link type="text/css" rel="stylesheet" href="/static/ambient.css"/>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
   </head>
   <body>
     <div class="sidebar left shadow">
@@ -12,9 +13,11 @@
         <h1>ARTifacts</h1>
         <h2>ACT Public Art</h2>
       </div>
-      <p class="instructions">Tweet a suburb to @artifactsact</p>
-      <p style="display:none;">The ACT Government is providing our community with exciting art in public places in more accessible ways.</p>
-      <p class="shorturl">arts.act.gov.au</p>
+      <div class="instructions">
+        <h2><i class="fa fa-twitter fa-lg"></i> Twitter</h2>
+        <p>Request art from a suburb! Tweet a suburb name to <span id="twitteraccount">@artifactsact</span></p>
+      </div>
+      <p class="shorturl">data from arts.act.gov.au</p>
     </div>
     <div id="artpanel" style="left: -65%;">
       <div id="artphoto" class="shadow">
