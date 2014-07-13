@@ -38,6 +38,7 @@ class Twitter(object):
         suburbs.remove('')
         suburbs.add('CIVIC')
         suburbs.add('CBD')
+        suburbs.add('CONNOR')
         self.suburbs = suburbs
 
         self.url = 'https://api.twitter.com/1.1/statuses/mentions_timeline.json'
@@ -59,6 +60,8 @@ class Twitter(object):
                         self.last_from_user = item['user']['screen_name']
                         if word == 'CIVIC' or word == 'CBD':
                             word = 'CITY'
+                        if word == 'CONNOR':
+                            word = "O'CONNOR"
                         self.last_suburb = word
         last_tweet = {'timestamp': self.last_tweet_time,
                       'suburb': self.last_suburb,
