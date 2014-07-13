@@ -22,6 +22,11 @@ class test_app_startup(unittest.TestCase):
         self.assertEqual(rv.status_code, 200,
                          "Incorrect status code when retrieving page")
 
+    def test_twitter_latest_request(self):
+        rv = self.app.get('/twitter/latest_request')
+        self.assertEqual(rv.status_code, 200,
+                         "Incorrect status code when retrieving page")
+
 
 if __name__ == '__main__':
     unittest.main()

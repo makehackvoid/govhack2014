@@ -3,6 +3,7 @@ import json
 import os
 from requests_oauthlib import OAuth1Session
 import settings
+import time
 
 
 class Twitter(object):
@@ -15,8 +16,8 @@ class Twitter(object):
     Methods
     -------
     get_suburb
-        return the most recent suburb in tweets or None if no
-        suburbs or same tweet is still most recent.
+        return the most recent suburb in tweets or 'CITY' if no
+        suburbs.
     parse_tweets
         parsing code to look for suburb in mentions_timeline json
 
@@ -40,6 +41,9 @@ class Twitter(object):
 
         self.url = 'https://api.twitter.com/1.1/statuses/mentions_timeline.json'
         self.last_tweet_id = 0
+        self.last_tweet_time = 0
+        self.last_suburb = 'CITY'
+        self.last_from_user = 'mhvgovhacktest'
 
     def parse_tweets(self, response):
         for item in response:
@@ -48,9 +52,16 @@ class Twitter(object):
                 if word in self.suburbs:
                     if item['id'] != self.last_tweet_id:
                         self.last_tweet_id = item['id']
+                        ts = time.strptime(item['created_at'], '%a %b %d %H:%M:%S +0000 %Y')
+                        self.last_tweet_time = time.strftime('%s', ts)
+                        self.last_from_user = item['user']['screen_name']
                         if word == 'CIVIC':
                             word = 'CITY'
-                        return word
+                        self.last_suburb = word
+        last_tweet = {'timestamp': self.last_tweet_time,
+                      'suburb': self.last_suburb,
+                      'screen_name': self.last_from_user}
+        return last_tweet
 
     def get_suburb(self):
         try:
@@ -61,6 +72,5 @@ class Twitter(object):
             r = twitter_session.get(url=self.url)
             if r.ok:
                 return self.parse_tweets(r.json())
-
         except:
                 None
