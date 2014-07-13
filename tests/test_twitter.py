@@ -27,7 +27,7 @@ class test_twitter(unittest.TestCase):
         jsontest = json.loads(test)
         suburb = self.t.parse_tweets(jsontest)
         ts = time.strptime("Sat Jul 12 01:22:32 +0000 2014", '%a %b %d %H:%M:%S +0000 %Y')
-        tse = time.strftime('%s', ts)
+        tse = int(time.strftime('%s', ts))
 
         self.assertEqual(suburb['suburb'], 'PARKES', "valid suburb")
         self.assertEqual(suburb['screen_name'], 'cmrn', "screen name")
@@ -39,6 +39,18 @@ class test_twitter(unittest.TestCase):
         jsontest = json.loads(test)
         suburb = self.t.parse_tweets(jsontest)
         self.assertEqual(suburb['suburb'], 'PARKES', "previous suburb")
+
+        test = '[{"created_at":"Sat Jul 12 01:22:32 +0000 2014",'
+        test = test + '"id":487768939548539999,"id_str":"487768939548536840",'
+        test = test + '"text":"@mhvgovhacktest Show me a Civic sculpture",'
+        test = test + '"user":{"screen_name":"cmrn"}}]'
+        jsontest = json.loads(test)
+        suburb = self.t.parse_tweets(jsontest)
+        ts = time.strptime("Sat Jul 12 01:22:32 +0000 2014", '%a %b %d %H:%M:%S +0000 %Y')
+        tse = int(time.strftime('%s', ts))
+        self.assertEqual(suburb['suburb'], 'CITY', "valid suburb")
+        self.assertEqual(suburb['screen_name'], 'cmrn', "screen name")
+        self.assertEqual(suburb['timestamp'], tse, "timestamp")
 
     def tearDown(self):
         del self.t

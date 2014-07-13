@@ -50,11 +50,12 @@ class Twitter(object):
         for item in response:
             for word in re.findall(r"[\w']+", item['text']):
                 word = word.upper()
+                ts = time.strptime(item['created_at'], '%a %b %d %H:%M:%S +0000 %Y')
+                tsa = int(time.strftime('%s', ts))
                 if word in self.suburbs:
-                    if item['id'] != self.last_tweet_id:
+                    if tsa >= self.last_tweet_time:
                         self.last_tweet_id = item['id']
-                        ts = time.strptime(item['created_at'], '%a %b %d %H:%M:%S +0000 %Y')
-                        self.last_tweet_time = time.strftime('%s', ts)
+                        self.last_tweet_time = tsa
                         self.last_from_user = item['user']['screen_name']
                         if word == 'CIVIC' or word == 'CBD':
                             word = 'CITY'
