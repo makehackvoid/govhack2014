@@ -6,11 +6,12 @@ import urllib.request
 import os
 
 
-def save_file(url,filename):
+def save_file(url, filename):
     if (os.path.exists(filename)):
         print(filename + ' already exists locally')
         pass
-    urllib.request.urlretrieve(url,filename)
+    urllib.request.urlretrieve(url, filename)
+
 
 def get_filename(url):
     relpath = urlparse(url).path
@@ -34,10 +35,9 @@ for item in data:
     pic = item['url_2']['url']
     filename = get_filename(pic)
 
-    download_list.append({'title': title, 'page': page, 'file': filename })
+    download_list.append({'title': title, 'page': page, 'file': filename})
 for item in download_list:
     retry = requests.get(item['page']).text
     data = BeautifulSoup(retry)
-    imageurl = data.find_all('div',{'id' :'artinfo'})[0].find_all('img')[0]['src']
-    save_file(imageurl,os.path.join(filedir,item['file']))
-
+    imageurl = data.find_all('div', {'id': 'artinfo'})[0].find_all('img')[0]['src']
+    save_file(imageurl, os.path.join(filedir, item['file']))
