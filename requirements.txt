@@ -9,7 +9,6 @@ gunicorn==19.0.0
 itsdangerous==0.23
 mccabe==0.2.1
 oauthlib==0.6.3
-peewee==2.2.1
 pep8==1.5.7
 pyflakes==0.8.1
 python-twitter==2.0

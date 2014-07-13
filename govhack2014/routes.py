@@ -1,7 +1,5 @@
 from govhack2014 import app
-from govhack2014.models import *  # noqa
 from flask import render_template, request, flash, redirect, url_for, jsonify  # noqa
-from govhack2014.resources import *  # noqa
 from twitter import Twitter
 
 
