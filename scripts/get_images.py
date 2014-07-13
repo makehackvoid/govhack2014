@@ -21,7 +21,8 @@ def get_filename(url):
 url = 'http://www.data.act.gov.au/resource/j746-krni.json'
 data = requests.get(url).json()
 
-filedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../data/images'))
+filedir = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                       '../govhack2014/static/art_images'))
 
 if not os.path.exists(filedir):
     os.makedirs(filedir)

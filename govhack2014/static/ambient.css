@@ -51,9 +51,8 @@ p.shorturl {
     overflow: auto;
     height: 100%;
     background-color: #556270;
-    box-shadow: 5px 0px 20px #aaa;
     padding: 0 20px;
-    z-index: 1;
+    z-index: 100;
     left: 0;
 }
 .background {
@@ -89,7 +88,7 @@ p.shorturl {
 #artpanel {
     display: inline;
     position: absolute;
-    z-index: 2;
+    z-index: 10;
     left: 22%;
     height: 100%;
     width: 65%;
@@ -103,6 +102,11 @@ p.shorturl {
     padding: 10px;
     overflow: visible;
     max-height: 100%;
+    z-index: 4;
+}
+
+#plaque h3 {
+    display: block;
 }
 
 #artphoto {
@@ -110,16 +114,24 @@ p.shorturl {
     background: #000;
     width: 70%;
     float: left;
+    z-index: 5;
 }
 #artimg {
     border: #000 4px solid;
-    width: 100%;
-    max-height: 100%;
     position: relative;
     top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+img.portrait {
+    height: 100%;
+}
+
+img.landscape {
+    width: 100%;
 }
 
 #title {
@@ -137,4 +149,8 @@ p.shorturl {
 
 .instructions {
     font-size: 1.5em;
+}
+
+.shadow {
+    box-shadow: 5px 0px 20px rgba(0,0,0,0.54);
 }

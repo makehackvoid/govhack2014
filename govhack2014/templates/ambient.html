@@ -7,7 +7,7 @@
     <link type="text/css" rel="stylesheet" href="/static/ambient.css"/>
   </head>
   <body>
-    <div class="sidebar left">
+    <div class="sidebar left shadow">
       <div id="heading">
         <h1>ARTifacts</h1>
         <h2>ACT Public Art</h2>
@@ -16,18 +16,18 @@
       <p style="display:none;">The ACT Government is providing our community with exciting art in public places in more accessible ways.</p>
       <p class="shorturl">artACT.com</p>
     </div>
-    <div id="artpanel">
-      <div id="artphoto">
-        <img id="artimg" src="http://www.arts.act.gov.au/__data/assets/image/0007/390562/Toku_large.jpg">
+    <div id="artpanel" style="left: -65%;">
+      <div id="artphoto" class="shadow">
+        <img id="artimg" src="">
       </div>
-      <div id="plaque">
-        <h3><span id="title">Alfred Deakin, A Life in Three Phases</span></h3>
-        <h3><span id="artist">Phil Nizette and Jennifer Jones silly name</span></h3>
-        <h3><span id="location">North Canberra</span></h3>
-        <h3>Commissioned in <span id="commissionDate">2009</span> by <span id="commissioner">artsACT</span>
+      <div id="plaque" class="shadow">
+        <h3><span id="title"></span></h3>
+        <h3><span id="artist"></span></h3>
+        <h3><span id="location"></span></h3>
+        <h3>Commissioned in <span id="commissionDate"></span> by <span id="commissioner"></span>
         </h3>
         <div id="down">
-          <h3>Requested by <span id="tweeter">@maybe</span>
+          <h3>Requested by @<span id="tweeter"></span>
         </div>
       </div>
     </div>
@@ -40,9 +40,36 @@
         this.parentNode.appendChild(this);
       });
     };
+    function toTitleCase(str)
+    {
+      return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+
+    function get_local_image_url(remote_url) {
+      var filename = remote_url.split("/").slice(-1)[0];
+      return "/static/art_images/" + filename;
+    }
+
+    function set_art_image(url) {
+      var img = $("#artimg");
+      var container = $("#artphoto");
+
+      $(img).attr("src", url);
+
+      var imgH = $(img).height();
+      var imgW = $(img).width();
+
+      if ( imgW < imgH ) { 
+          $(img).removeClass("landscape");
+          $(img).addClass("portrait");
+      } else {
+          $(img).removeClass("portrait");
+          $(img).addClass("landscape");
+      }
+    }
 
 
-    var ART_TIME = 5;
+    var ART_TIME = 20;
     var MAP_TIME = 5;
     var BEAT_TIME = 1;
 
@@ -122,6 +149,8 @@
         t1
         .select("#art"+selected)
         .attr("r", 10.0/visual_z);
+
+        return t1;
     }
 
     function select_point(t, id) {
@@ -159,11 +188,21 @@
       return [xy[0], xy[1], z];
     }
 
+    function show_panel() {
+      $("#artpanel").animate({left: '22%'}, BEAT_TIME*1000);
+    }
+
+    function hide_panel(end) {
+      $("#artpanel").animate({left: '-70%'}, BEAT_TIME*1000, 'swing', end);
+    }
+
     function show_map() {
-      var t = g.transition().duration(BEAT_TIME * 1000);
-      var xyz = [width / 2, height / 2, 1];
-      deselect_point(t);
-      zoom(t, xyz);
+      hide_panel(function() {
+        var xyz = [width / 2, height / 2, 1];
+        var t = g.transition().duration(BEAT_TIME * 1000);
+        deselect_point(t);
+        zoom(t, xyz);
+      });
     }
 
     function show_art(id) {
@@ -172,7 +211,15 @@
       var xyz = get_art_xyz(art);
       var t = g.transition().duration(BEAT_TIME * 1000);
       select_point(t, id);
-      zoom(t, xyz);
+      var t2 = zoom(t, xyz);
+      t2.each("end", show_panel);
+
+      $("#title").text(art.title);
+      $("#artist").text(art.artist);
+      $("#location").text(toTitleCase(art.suburb));
+      $("#commissioner").text(art.commissioned_details);
+      $("#commissionDate").text(art.date);
+      set_art_image(get_local_image_url(art.url_2.url));
     }
 
     function show_random_art() {
@@ -186,12 +233,16 @@
             });
             var art = possible_arts[Math.floor((Math.random() * possible_arts.length))];
             artID = arts.indexOf(art);
+            $("#down").show();
+            $("#tweeter").text(result.screen_name);
           }
         } catch(e) { }
         
         // No request or error, so show a random art
-        if(artID == null)
+        if(artID == null) {
           artID = Math.floor((Math.random() * arts.length));
+          $("#down").hide();
+        }
 
         show_art(artID);
       });
