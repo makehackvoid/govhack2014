@@ -45,7 +45,7 @@ class Twitter(object):
         self.last_tweet_id = 0
         self.last_tweet_time = 0
         self.last_suburb = 'CITY'
-        self.last_from_user = 'mhvgovhacktest'
+        self.last_from_user = 'artifactsact'
 
     def parse_tweets(self, response):
         for item in response:
