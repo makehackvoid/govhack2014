@@ -8,6 +8,9 @@ ARTifacts uses data from the ACT Public Art List to provide Canberrans and visit
 
 The data is delivered as a web app, with the potential for the display to be customised for screens in different locations so that the entries displayed are weighted towards nearby art works. The focus is on a simple, elegant view of the artifacts together with information about where they are.
 
+*  GovHack 2014 project page: http://hackerspace.govhack.org/content/artifacts-act-public-art
+*  Demo version of ARTifacts: http://govhack.makehackvoid.com/
+
 ##Dataset challenges
 
 The ACT Public Art List data set includes a field labelled 'suburb', but which actually contains districts (i.e. 'Gungahlin' rather than 'Ngunnawal'). To enable users to search for art in or near a specific suburb rather than the broader district, we have merged in ACT suburb shapefile data and correlated the GPS coordinate data in the ACT Public Art List data set with the suburb in which they are located. This data could easily be incorporated into the ACT Public Art List data set to improve its usefulness for other potential users in future.
