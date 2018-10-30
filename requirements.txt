@@ -12,6 +12,6 @@ oauthlib==0.6.3
 pep8==1.5.7
 pyflakes==0.8.1
 python-twitter==2.0
-requests==2.3.0
+requests ~> 2.20.0
 requests-oauthlib==0.4.1
 simplejson==3.5.3
