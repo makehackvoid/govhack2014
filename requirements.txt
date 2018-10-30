@@ -1,11 +1,11 @@
-Flask==0.10.1
+flask>=0.12.3
 Jinja2==2.7.2
 MarkupSafe==0.18
 Werkzeug==0.9.4
 argparse==1.2.1
 beautifulsoup4==4.3.2
 flake8==2.2.2
-gunicorn==19.0.0
+gunicorn>=19.5.0
 itsdangerous==0.23
 mccabe==0.2.1
 oauthlib==0.6.3
